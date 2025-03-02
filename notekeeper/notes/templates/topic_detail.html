@@ -16,7 +16,7 @@
                 {% if note.image %}
                     <img src="{{ note.image.url }}" alt="{{ note.title }}" style="max-width: 200px; max-height: 200px;">
                 {% endif %}
-                <p>{{ note.content }}</p>
+                <p>{{ note.content|linebreaksbr }}</p>
                 <p>Видимость: {{ note.get_visibility_display }}</p>
                 <a href="{% url 'edit_note' note.id %}">Редактировать</a>
                 <form action="{% url 'delete_note' note.id %}" method="post" style="display:inline;">
