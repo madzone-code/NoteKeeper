@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список тем</title>
+</head>
+<body>
+    <h1>Список тем</h1>
+    <a href="{% url 'create_topic' %}">Создать тему</a>
+    <ul>
+        {% for topic in topics %}
+            <li>
+                <a href="{% url 'topic_detail' topic.id %}">{{ topic.title }}</a>
+                <a href="{% url 'edit_topic' topic.id %}">Редактировать</a>
+                <form action="{% url 'delete_topic' topic.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Удалить</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>Темы отсутствуют.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
