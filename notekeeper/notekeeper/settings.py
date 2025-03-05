@@ -12,10 +12,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from django.utils.translation import gettext_lazy as _
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -26,7 +27,7 @@ SECRET_KEY = 'django-insecure-bnu&kjja%2c%!0&tt34^@_&8#_+y6+13#8gzh+cjz=q!1+-)xq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# Убрать перед продакшн
+# Убрать перед продакшн, разрешает все хосты
 ALLOWED_HOSTS = ['*']
 
 
@@ -55,10 +56,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'notekeeper.urls'
 
+# TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
+        # 'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,8 +83,13 @@ WSGI_APPLICATION = 'notekeeper.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
+        'NAME': os.getenv('DB_NAME', default='postgres'),
+        'USER': os.getenv('POSTGRES_USER', default='postgres'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+        'HOST': os.getenv('DB_HOST', default='db'),       # докер
+        # 'HOST': os.getenv('DB_HOST', default='localhost'),  # локальная БД
+        'PORT': os.getenv('DB_PORT', default=5432)
     }
 }
 
@@ -127,8 +136,17 @@ LANGUAGES = [
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# настройка для веб-сервера в продакшне. Собирается туда по команде collectstatic
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# настройка для самого Джанго во время разработки
+STATICFILES_DIRS = [
+    BASE_DIR / "staticfiles",  # Путь к вашей папке со статическими файлами
+]
+
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
