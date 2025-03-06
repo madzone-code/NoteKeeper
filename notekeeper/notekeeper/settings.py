@@ -30,17 +30,20 @@ DEBUG = True
 # Убрать перед продакшн, разрешает все хосты
 ALLOWED_HOSTS = ['*']
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Application definition
 
 INSTALLED_APPS = [
     'notes.apps.NotesConfig',
+    'about.apps.AboutConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -56,13 +59,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'notekeeper.urls'
 
-# TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        # 'DIRS': [TEMPLATES_DIR],
+        #'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -70,6 +73,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notes.context_processors.current_year',    # добавляет год
             ],
         },
     },
@@ -87,8 +91,8 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', default='postgres'),
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-        'HOST': os.getenv('DB_HOST', default='db'),       # докер
-        # 'HOST': os.getenv('DB_HOST', default='localhost'),  # локальная БД
+        #'HOST': os.getenv('DB_HOST', default='db'),       # докер
+        'HOST': os.getenv('DB_HOST', default='localhost'),  # локальная БД
         'PORT': os.getenv('DB_PORT', default=5432)
     }
 }

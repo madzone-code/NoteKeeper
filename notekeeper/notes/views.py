@@ -1,3 +1,4 @@
+from django.views.generic.base import TemplateView
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Topic, Note
 from .forms import TopicForm, NoteForm
@@ -6,7 +7,14 @@ from .forms import TopicForm, NoteForm
 def topic_list(request):
     topics = Topic.objects.all()
     content = {'topics': topics}
-    template = 'topic_list.html'
+    template = 'notes/topic_list.html'
+    return render(request, template, content)
+
+
+def note_list(request):
+    notes = Note.objects.all()
+    content = {'notes': notes}
+    template = 'notes/note_list.html'
     return render(request, template, content)
 
 
@@ -14,8 +22,50 @@ def topic_detail(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
     notes = topic.notes.all()  # Получаем все заметки, связанные с темой
     content = {'topic': topic, 'notes': notes}
-    template = 'topic_detail.html'
+    template = 'notes/topic_detail.html'
     return render(request, template, content)
+
+
+def note_detail(request, note_id):
+    note = get_object_or_404(Note, id=note_id)
+    content = {'note': note}
+    template = 'notes/note_detail.html'
+    return render(request, template, content)
+
+
+
+def note_edit(request, note_id):
+    template = 'notes/note_create.html'
+    note = get_object_or_404(Note, id=note_id)
+    form = NoteForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=note
+    )
+    if form.is_valid():
+        form.save()
+        return redirect('notes:note_detail', note_id)
+    context = {
+        'form': form,
+        'is_edit': True,
+        'note_id': note_id
+    }
+    return render(request, template, context)
+
+
+
+def note_create(request):
+    form = NoteForm(
+        request.POST or None,
+        files=request.FILES or None,
+    )
+    if not request.method == 'POST' or not form.is_valid():
+        return render(request, 'notes/note_create.html', {'form': form})
+    note = form.save(commit=False)
+    note.author = request.user
+    note.save()
+    return redirect('notes:note_list')
+
 
 
 def create_topic(request):

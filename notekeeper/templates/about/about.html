@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}О проекте.{% endblock %}
+
+{% block content %}
+  <div class="container py-5">
+    <h1>Привет, я автор!</h1>
+    <p>
+      Хочу немного рассказать об этом проекте.
+      <br>
+      Он представляет собой записную книжку. Своего рода, склерозник. Хранилище новой информации, которое всегда под рукой. 
+      <br>
+      Для этого, к слову, придется разместить на сервере в интернете.
+      <br>
+      А пока это возможность вспомнить то, что проходил. Плюс взаимодействие с DeepSeek.
+      <h6>Аккаунт github:
+        <a class="navbar-brand" href="https://github.com/madzone-code">
+          <img src="{% static 'img/github.jpg' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        </a>
+      </h6>
+	    <img src="{% static 'img/big_logo.png' %}" width="1024" height="1024">
+      <br>
+      <a class="btn btn-primary text-center mt-3" href="{% url 'notes:note_list' %}" role="button">На главную</a>     
+    </p>
+  </div>
+{% endblock %} 
