@@ -18,6 +18,9 @@
       <a class="btn btn-primary" href="{% url 'notes:note_edit' note.id %}">
         редактировать запись
       </a> 
+      <a class="btn btn-primary" href="{% url 'notes:note_delete' note.id %}">
+        удалить запись
+      </a> 
       <br>
       {% if not forloop.last %}
         <hr>

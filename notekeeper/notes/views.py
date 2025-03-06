@@ -1,5 +1,6 @@
 from django.views.generic.base import TemplateView
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from .models import Topic, Note
 from .forms import TopicForm, NoteForm
 
@@ -62,9 +63,20 @@ def note_create(request):
     if not request.method == 'POST' or not form.is_valid():
         return render(request, 'notes/note_create.html', {'form': form})
     note = form.save(commit=False)
-    note.author = request.user
     note.save()
     return redirect('notes:note_list')
+
+
+def topic_create(request):
+    form = TopicForm(
+        request.POST or None,
+        files=request.FILES or None,
+    )
+    if not request.method == 'POST' or not form.is_valid():
+        return render(request, 'notes/note_create.html', {'form': form})
+    topic = form.save(commit=False)
+    topic.save()
+    return redirect('notes:topic_list')
 
 
 
@@ -97,18 +109,35 @@ def edit_topic(request, topic_id):
     return render(request, template, content)
 
 
-def delete_topic(request, topic_id):
-    topic = get_object_or_404(Topic, id=topic_id)
+def note_delete(request, note_id):
+    note = get_object_or_404(Note, id=note_id)
+
     if request.method == 'POST':
-        topic.delete()
-        return redirect('topic_list')
-    content = {'object': topic}
-    template = 'confirm_delete.html'
+        note.delete()
+        messages.success(request, 'Запись успешно удалена.')
+        return redirect('notes:note_list')  # Перенаправление на список заметок
+
+    template = 'notes/note_delete.html'
+    content = {'note': note}
     return render(request, template, content)
 
 
-def create_note(request, topic_id):
+
+def topic_delete(request, topic_id):
     topic = get_object_or_404(Topic, id=topic_id)
+
+    if request.method == 'POST':
+        topic.delete()
+        messages.success(request, 'Тема успешно удалена.')
+        return redirect('notes:topic_list')  # Перенаправление на список заметок
+
+    template = 'notes/topic_delete.html'
+    content = {'topic': topic}
+    return render(request, template, content)
+
+
+def create_note(request, note_id):
+    topic = get_object_or_404(Topic, id=note_id)
     if request.method == 'POST':
         form = NoteForm(request.POST, request.FILES)
         if form.is_valid():
@@ -135,14 +164,4 @@ def edit_note(request, note_id):
         form = NoteForm(instance=note)
     content = {'form': form, 'note': note}
     template = 'edit_note.html'
-    return render(request, template, content)
-
-
-def delete_note(request, note_id):
-    note = get_object_or_404(Note, id=note_id)
-    if request.method == 'POST':
-        note.delete()
-        return redirect('topic_detail', topic_id=note.topic.id)
-    content = {'object': note}
-    template = 'confirm_delete.html'
     return render(request, template, content)

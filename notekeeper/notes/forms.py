@@ -7,6 +7,8 @@ class TopicForm(forms.ModelForm):
         fields = ['title']
 
 class NoteForm(forms.ModelForm):
+    topic = forms.ModelChoiceField(queryset=Topic.objects.all(), required=True)
+
     class Meta:
         model = Note
-        fields = ['title', 'content', 'visibility', 'image', 'author']
+        fields = ['title', 'content', 'visibility', 'image', 'author', 'topic']

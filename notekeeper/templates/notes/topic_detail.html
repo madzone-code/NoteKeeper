@@ -9,18 +9,34 @@
 
 {% block content %}
   <div class="container py-5">
-    {% for note in notes %}
-    <article>
-      <h2 style="font-size: 24px; font-weight: bold; color: #333;">{{ note.title }}</h2>
-      {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
-        <img class="card-img my-2" src="{{ im.url }}">
-      {% endthumbnail %}
-      <pre>{{ note.content }}</pre>
-      <br>
-      {% if not forloop.last %}
-        <hr>
-      {% endif %}
-    </article>
-    {% endfor %}
+    <h1>Заметки по теме {{ topic.title }}</h1>
+    <hr>
+    {% if notes %}
+      {% for note in notes %}
+      <article>
+        <h2 style="font-size: 24px; font-weight: bold; color: #333;">{{ note.title }}</h2>
+        {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+          <img class="card-img my-2" src="{{ im.url }}">
+        {% endthumbnail %}
+        <pre>{{ note.content }}</pre>
+        <br>
+        <a class="btn btn-primary" href="{% url 'notes:note_edit' note.id %}">
+            редактировать запись
+        </a> 
+        <a class="btn btn-danger" href="{% url 'notes:note_delete' note.id %}">
+            удалить запись
+        </a> 
+        <br>
+        {% if not forloop.last %}
+          <hr>
+        {% endif %}
+      </article>
+      {% endfor %}
+    {% else %}
+      <p>Нет заметок в этой теме.</p>
+      <a class="btn btn-danger" href="{% url 'notes:topic_delete' topic.id %}">
+          удалить тему
+      </a>
+    {% endif %}
   </div>
 {% endblock %}

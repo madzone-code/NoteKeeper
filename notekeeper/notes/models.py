@@ -9,10 +9,6 @@ class Topic(models.Model):
         max_length=200,
         verbose_name='Название темы',
         )
-    user = models.ForeignKey(
-        User,
-        verbose_name='Автор',
-        on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Тема'  # Отображаемое имя в единственном числе

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Подтверждение удаления{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2>Вы уверены, что хотите удалить тему "{{ topic.title }}"?</h2>
+    <form action="{% url 'notes:topic_delete' topic.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Удалить</button>
+        <a href="{% url 'notes:topic_list' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}
