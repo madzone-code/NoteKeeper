@@ -11,8 +11,10 @@ class Topic(models.Model):
         )
 
     class Meta:
-        verbose_name = 'Тема'  # Отображаемое имя в единственном числе
-        verbose_name_plural = 'Темы'  # Отображаемое имя во множественном 
+        # Отображаемое имя в единственном числе
+        verbose_name = 'Тема'
+        # Отображаемое имя во множественном
+        verbose_name_plural = 'Темы'
 
     def __str__(self):
         return self.title
@@ -33,7 +35,7 @@ class Note(models.Model):
     visibility = models.CharField(
         max_length=7,
         choices=VISIBILITY_CHOICES,
-        verbose_name = 'Видимость',
+        verbose_name='Видимость',
         )
     topic = models.ForeignKey(
         Topic,
@@ -52,8 +54,8 @@ class Note(models.Model):
         )  # Новое поле author
 
     class Meta:
-        verbose_name = 'Заметка'  # Отображаемое имя в единственном числе
-        verbose_name_plural = 'Заметки'  # Отображаемое имя во множественном 
+        verbose_name = 'Заметка'
+        verbose_name_plural = 'Заметки'
 
     def __str__(self):
         return self.title
