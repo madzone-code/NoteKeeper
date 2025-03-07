@@ -30,6 +30,9 @@ DEBUG = True
 # Убрать перед продакшн, разрешает все хосты
 ALLOWED_HOSTS = ['*']
 
+# Доверенные источники для CSRF
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1', 'http://localhost']
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Application definition
