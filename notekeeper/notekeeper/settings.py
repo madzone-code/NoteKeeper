@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-bnu&kjja%2c%!0&tt34^@_&8#_+y6+13#8gzh+cjz=q!1+-)xq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Убрать перед продакшн, разрешает все хосты
 ALLOWED_HOSTS = ['*']
@@ -94,8 +94,8 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', default='postgres'),
         'USER': os.getenv('POSTGRES_USER', default='postgres'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
-        #'HOST': os.getenv('DB_HOST', default='db'),       # докер
-        'HOST': os.getenv('DB_HOST', default='localhost'),  # локальная БД
+        'HOST': os.getenv('DB_HOST', default='db'),       # докер
+        #'HOST': os.getenv('DB_HOST', default='localhost'),  # локальная БД
         'PORT': os.getenv('DB_PORT', default=5432)
     }
 }

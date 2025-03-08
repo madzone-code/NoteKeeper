@@ -3,7 +3,7 @@ services:
   # Описание контейнера db.
   db:
     # Образ, из которого должен быть запущен контейнер.
-    image: postgres:13.0-alpine
+    image: postgres:17.0-alpine
     # Том "db_value" и связанная с ним директория в контейнере.
     volumes:
       - db_value:/var/lib/postgresql/data/

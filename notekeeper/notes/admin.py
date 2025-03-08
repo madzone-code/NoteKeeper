@@ -13,7 +13,7 @@ class NoteAdmin(admin.ModelAdmin):
         'display_content', 'author', 'visibility')
     # Фильтры для боковой панели
     list_filter = ('topic', 'visibility')
-    # Поля для поискаs
+    # Поля для поиска
     search_fields = ('title', 'content')
 
     def display_image(self, obj):
@@ -21,19 +21,19 @@ class NoteAdmin(admin.ModelAdmin):
             return format_html(
                 '<img src="{}" style="width: 100px; height: auto;" />',
                 obj.image.url
-                )
+            )
         return 'Нет изображения'
     display_image.short_description = 'Изображение'  # Заголовок для столбца
 
     def display_content(self, obj):
-        # Преобразование переносов строк в HTML
-        return mark_safe(linebreaks(obj.content))
+        # Преобразование переносов строк и пробелов в HTML
+        return mark_safe(f'<pre>{obj.content}</pre>')  # Используем <pre> для сохранения форматирования
     display_content.short_description = 'Содержимое'  # Заголовок для столбца
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         # Настройка виджета Textarea
         if db_field.name == 'content':
-            kwargs['widget'] = forms.Textarea(attrs={'rows': 10, 'cols': 80})
+            kwargs['widget'] = forms.Textarea(attrs={'rows': 10, 'cols': 80, 'style': 'white-space: pre-wrap;'})
         return super().formfield_for_dbfield(db_field, request, **kwargs)
 
 
