@@ -22,7 +22,7 @@ def note_delete(request, note_id):
     if request.method == 'POST':
         note.delete()
         messages.success(request, 'Запись успешно удалена.')
-        return redirect('notes:note_list')  # Перенаправление на список заметок
+        return redirect('notes:note_list')
     template = 'notes/note_delete.html'
     content = {'note': note}
     return render(request, template, content)
